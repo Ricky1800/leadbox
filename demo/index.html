@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Garden State Home Services (LeadBox demo)</title>
+<meta name="description" content="A fictional local business site demonstrating the LeadBox lead-capture widget." />
+<style>
+  :root {
+    --ink: #111827;
+    --muted: #6b7280;
+    --accent: #15803d;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #14532d, #15803d 60%, #16a34a);
+    color: white;
+    padding: 64px 24px;
+    text-align: center;
+  }
+  header.hero h1 { margin: 0 0 12px; font-size: clamp(28px, 5vw, 44px); }
+  header.hero p { margin: 0 auto; max-width: 560px; font-size: 18px; opacity: 0.95; }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 16px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  nav a { color: var(--ink); text-decoration: none; }
+  nav a:hover { color: var(--accent); }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 24px; }
+  section { margin-bottom: 48px; }
+  h2 { font-size: 24px; margin-bottom: 8px; }
+  .services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .service-card h3 { margin: 0 0 8px; font-size: 17px; }
+  .service-card p { margin: 0; color: var(--muted); font-size: 14px; }
+  .banner {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #065f46;
+  }
+  #submissions-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  #submissions {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .submission {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Garden State Home Services</h1>
+  <p>Landscaping, gutter cleaning, and seasonal home maintenance for Central New Jersey. Licensed &amp; insured.</p>
+</header>
+
+<nav>
+  <a href="#services">Services</a>
+  <a href="#about">About</a>
+  <a href="#demo-notes">About this demo</a>
+</nav>
+
+<main>
+  <section class="banner">
+    This is a <strong>fictional business</strong> built to demonstrate the
+    <a href="https://github.com/Ricky1800/leadbox">LeadBox</a> lead-capture
+    widget. Click the "Get a Free Quote" button in the bottom-right corner —
+    submissions here go to a mock endpoint (no real data is sent anywhere)
+    and appear in the "Recent submissions" panel below.
+  </section>
+
+  <section id="services">
+    <h2>What we do</h2>
+    <div class="services">
+      <div class="service-card">
+        <h3>Lawn Care</h3>
+        <p>Weekly mowing, edging, and seasonal cleanups.</p>
+      </div>
+      <div class="service-card">
+        <h3>Gutter Cleaning</h3>
+        <p>Spring and fall gutter clearing with photo confirmation.</p>
+      </div>
+      <div class="service-card">
+        <h3>Landscaping</h3>
+        <p>Mulch, planting beds, and small hardscape projects.</p>
+      </div>
+      <div class="service-card">
+        <h3>Snow Removal</h3>
+        <p>Driveway and walkway clearing, on-call all winter.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About us</h2>
+    <p>
+      Family-owned and operated since 2011, serving homeowners across
+      Middlesex and Somerset counties. We show up on time, do the job
+      right, and stand behind our work.
+    </p>
+  </section>
+
+  <section id="submissions-panel">
+    <h2>Recent submissions <small style="color: var(--muted); font-weight: 400;">(demo only, stored in memory)</small></h2>
+    <ul id="submissions">
+      <li id="submissions-empty" style="color: var(--muted);">No submissions yet — try the "Get a Free Quote" button.</li>
+    </ul>
+  </section>
+
+  <section id="demo-notes">
+    <h2>About this demo</h2>
+    <p>
+      The widget is loaded with:
+    </p>
+    <pre style="background:#f1f5f9; padding:16px; border-radius:8px; overflow-x:auto; font-size:13px;"><code>&lt;script
+  src="../dist/leadbox.min.js"
+  data-endpoint="https://demo.leadbox.invalid/api/leads"
+  data-title="Get a Free Quote"
+  data-subtitle="Tell us about your project and we'll follow up within one business day."
+  data-button-text="Get a Free Quote"
+  data-accent-color="#15803d"
+  data-fields="name,phone,email,service,message,preferredContact"
+  data-required-fields="name,phone"
+  data-service-options="Lawn Care,Gutter Cleaning,Landscaping,Snow Removal,Other"
+  data-booking-url="https://calendly.com/example/consult"
+  data-phone="+19085551234"
+&gt;&lt;/script&gt;</code></pre>
+    <p>
+      Network requests are intercepted client-side (see
+      <code>demo/mock-endpoint.js</code>) since GitHub Pages can only serve
+      static files — in production you'd point <code>data-endpoint</code>
+      at a real backend. See the
+      <a href="../README.md">README</a> and <a href="../docs/">docs/</a>
+      for real backend options (Google Sheets, Formspree, Zapier/Make).
+    </p>
+  </section>
+</main>
+
+<footer>
+  LeadBox demo &middot; <a href="https://github.com/Ricky1800/leadbox">View source on GitHub</a>
+</footer>
+
+<script src="mock-endpoint.js"></script>
+<script
+  src="../dist/leadbox.min.js"
+  data-endpoint="https://demo.leadbox.invalid/api/leads"
+  data-title="Get a Free Quote"
+  data-subtitle="Tell us about your project and we'll follow up within one business day."
+  data-button-text="Get a Free Quote"
+  data-accent-color="#15803d"
+  data-fields="name,phone,email,service,message,preferredContact"
+  data-required-fields="name,phone"
+  data-service-options="Lawn Care,Gutter Cleaning,Landscaping,Snow Removal,Other"
+  data-booking-url="https://calendly.com/example/consult"
+  data-phone="+19085551234"
+  data-debug="true"
+></script>
+<script>
+  document.addEventListener('leadbox:submit', function (e) {
+    console.log('[demo] leadbox:submit', e.detail);
+  });
+  document.addEventListener('leadbox:success', function (e) {
+    console.log('[demo] leadbox:success', e.detail);
+  });
+  document.addEventListener('leadbox:error', function (e) {
+    console.log('[demo] leadbox:error', e.detail);
+  });
+</script>
+</body>
+</html>
