@@ -16,7 +16,7 @@ want the lead routed somewhere specific.
 
    ```html
    <script
-     src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.1.0/dist/leadbox.min.js"
+     src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.2.0/dist/leadbox.min.js"
      data-endpoint="https://hooks.zapier.com/hooks/catch/123456/abcdef/"
      data-encoding="json"
    ></script>

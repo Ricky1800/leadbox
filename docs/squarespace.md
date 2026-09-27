@@ -13,7 +13,7 @@ plans don't support the Code Injection panel).
 
    ```html
    <script
-     src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.1.0/dist/leadbox.min.js"
+     src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.2.0/dist/leadbox.min.js"
      data-endpoint="YOUR_ENDPOINT_URL"
      data-title="Get a Free Quote"
    ></script>
