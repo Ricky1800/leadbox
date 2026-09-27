@@ -65,7 +65,9 @@ precedence over `data-*` attributes, which take precedence over defaults.
 | `subtitle` | `data-subtitle` | *(see locale)* | Modal subheading. |
 | `buttonText` | `data-button-text` | `Get a Free Quote` | Text on the floating trigger button. |
 | `position` | `data-position` | `bottom-right` | One of `bottom-right`, `bottom-left`, `top-right`, `top-left`. |
-| `accentColor` | `data-accent-color` | `#2563eb` | CSS color for buttons/accents. |
+| `theme` | `data-theme` | `default` | One of `default`, `salon`, `trades`, `restaurant`, `clinic`, `auto`, `professional`. See [Themes](#themes). |
+| `colorScheme` | `data-color-scheme` | `auto` | `auto` follows the visitor's OS `prefers-color-scheme`; `light`/`dark` forces one mode. |
+| `accentColor` | `data-accent-color` | *(theme's accent)* | Single-token override for the active theme's accent color. |
 | `fields` | `data-fields` | `name,phone,email,message` | Comma-separated: `name`, `phone`, `email`, `message`, `service`, `preferredContact`. |
 | `requiredFields` | `data-required-fields` | `name,phone` | Comma-separated subset of `fields`. |
 | `serviceOptions` | `data-service-options` | `[]` | Comma-separated options for the `service` dropdown. |
@@ -104,6 +106,51 @@ document.addEventListener('leadbox:error', (e) => {
   // e.detail = { error, status }
 });
 ```
+
+## Themes
+
+LeadBox ships seven built-in visual presets, each a coherent set of colors,
+corner radius, font stack, and shadows tuned for a local-business vertical
+— pick one with `data-theme` or `theme` in `init()`:
+
+| Theme | Look |
+| --- | --- |
+| `default` | Neutral blue, rounded, works for almost any business. |
+| `salon` | Soft blush/rose tones, generous rounding, a friendly font — hair, nails, spas. |
+| `trades` | Bold safety-orange, sharp corners, high contrast — plumbers, electricians, contractors. |
+| `restaurant` | Warm terracotta, serif type — restaurants, cafes. |
+| `clinic` | Clean teal, minimal, high whitespace — dental, medical, wellness. |
+| `auto` | Dark charcoal + red accent, condensed type, sharp corners — auto repair/body shops. |
+| `professional` | Navy, serif, restrained — law, accounting, consulting. |
+
+```html
+<script src="..." data-endpoint="..." data-theme="clinic"></script>
+```
+
+Every theme automatically adapts to the visitor's OS-level dark mode
+(`prefers-color-scheme: dark`); force one mode with
+`data-color-scheme="light"` or `"dark"`. Need one color changed without
+switching themes entirely? `data-accent-color` overrides just the accent
+token on top of whichever theme is active.
+
+**See every theme live:** open `demo/themes.html` (run `npm run build`
+first, then serve the repo root with any static file server, e.g.
+`npx serve .`, and visit `/demo/themes.html`) — it mounts a real widget
+instance per theme with a working submit flow, so you can also see the
+success-check animation and try the light/dark toggle on each card.
+
+### Screenshots
+
+Actual screenshots aren't checked into this repo (small, dependency-free
+widget — no image assets by design). To see it yourself:
+
+1. `npm install && npm run build`
+2. Serve the repo root (`npx serve .`) and open `demo/index.html` for the
+   full page + floating button + modal, or `demo/themes.html` for the
+   theme gallery described above.
+3. Click the floating "Get a Free Quote" button, submit the form, and
+   watch the success checkmark animate in (disable "reduce motion" in
+   your OS if you don't see it animate).
 
 ## Backends
 
@@ -154,7 +201,9 @@ For a plain HTML/static site, just paste the script tag before `</body>`.
 ## Size budget
 
 `dist/leadbox.min.js` is checked in CI to stay under **10 KB gzipped**
-(`npm run size`). At the time of writing it's about 6.5 KB gzipped.
+(`npm run size`). At the time of writing it's about 8.4 KB gzipped
+(the theme system in `src/themes.js` accounts for most of the growth
+from the ~6.5 KB v0.1.0 build).
 
 ## Development
 
