@@ -1,8 +1,14 @@
 # LeadBox
 
+[![CI](https://github.com/Ricky1800/leadbox/actions/workflows/ci.yml/badge.svg)](https://github.com/Ricky1800/leadbox/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/tag/Ricky1800/leadbox?label=release)](https://github.com/Ricky1800/leadbox/tags)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 A tiny, dependency-free "Get a Free Quote" widget any small business can
 drop into any website with one `<script>` tag — no npm install, no build
 step, no server required.
+
+![LeadBox widget dialog open on a demo site](docs/images/demo-dialog-open.png)
 
 **Live demo:** https://ricky1800.github.io/leadbox/demo/
 
@@ -157,8 +163,23 @@ success-check animation and try the light/dark toggle on each card.
 
 ### Screenshots
 
-Actual screenshots aren't checked into this repo (small, dependency-free
-widget — no image assets by design). To see it yourself:
+The widget itself ships with no bundled image assets (small, dependency-free
+by design) — the screenshots below are generated from the real `demo/` pages
+against a built `dist/leadbox.min.js`, not mockups.
+
+**Dialog open**, filled in and about to submit:
+
+![LeadBox dialog open, filled in](docs/images/demo-dialog-open.png)
+
+**Success state**, after a submit (the success-check animation settled):
+
+![LeadBox success state with the checkmark animation settled](docs/images/demo-success-state.png)
+
+**Theme gallery** (`demo/themes.html`) — every built-in preset, live:
+
+![LeadBox theme gallery: all seven built-in presets](docs/images/themes-gallery.webp)
+
+To see it yourself:
 
 1. `npm install && npm run build`
 2. Serve the repo root (`npx serve .`) and open `demo/index.html` for the
