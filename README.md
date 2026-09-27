@@ -183,6 +183,11 @@ criteria. Contributions on any of these are welcome.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Authors
+
+- [@Ricky1800](https://github.com/Ricky1800)
+- [@orbitwebsites-cloud](https://github.com/orbitwebsites-cloud) ([OrbitBoyzz](https://orbitboyzz.me))
+
 ## License
 
 [MIT](LICENSE) © 2026 Ricky1800
