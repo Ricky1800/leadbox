@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an idea or improvement for LeadBox.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion! Check the [roadmap](../../ROADMAP_ISSUES.md) and existing issues first to avoid duplicates.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that LeadBox doesn't currently support?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you like this to work? Example config/API shape is helpful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds you're currently using, or other approaches you considered.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints check
+      description: LeadBox is intentionally small and dependency-free.
+      options:
+        - label: I understand this should not add a runtime dependency or meaningfully grow the bundle size (currently well under the 10 KB gzip budget).
+          required: true

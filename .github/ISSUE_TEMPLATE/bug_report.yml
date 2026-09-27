@@ -1,0 +1,71 @@
+name: Bug report
+description: Report something that isn't working as expected.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in as much detail as you can.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Ideally a minimal HTML page or CodePen/StackBlitz link that reproduces the issue.
+      placeholder: |
+        1. Load the widget with config X
+        2. Click "..."
+        3. See error/behavior "..."
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: LeadBox version
+      placeholder: "v0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browser(s)
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile Safari (iOS)
+        - Mobile Chrome (Android)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Widget configuration
+      description: The data-* attributes or LeadBox.init() options you're using (remove any real endpoint URLs/secrets).
+      render: html
+    validations:
+      required: false
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: Any errors from the browser console.
+      render: shell
+    validations:
+      required: false
