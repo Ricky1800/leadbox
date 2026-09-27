@@ -18,16 +18,32 @@ the whole thing is under 10 KB gzipped.
 
 ## 30-second install
 
+**Once published to npm**, the jsDelivr npm CDN is the recommended source
+(it tracks the `0.2.x` line automatically, no GitHub tag to keep in sync):
+
 ```html
 <script
-  src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.1.0/dist/leadbox.min.js"
+  src="https://cdn.jsdelivr.net/npm/leadbox@0.2/dist/leadbox.min.js"
   data-endpoint="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
   data-title="Get a Free Quote"
   data-accent-color="#2563eb"
 ></script>
 ```
 
-Paste that before `</body>` on any site — WordPress, Wix, Squarespace,
+**Working right now** (npm package not yet published): the same file served
+straight from the GitHub repo via jsDelivr's `gh` source, pinned to a release
+tag:
+
+```html
+<script
+  src="https://cdn.jsdelivr.net/gh/Ricky1800/leadbox@v0.2.0/dist/leadbox.min.js"
+  data-endpoint="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+  data-title="Get a Free Quote"
+  data-accent-color="#2563eb"
+></script>
+```
+
+Paste either one before `</body>` on any site — WordPress, Wix, Squarespace,
 Shopify, or a plain HTML page — and you have a working lead-capture form.
 Don't have a backend yet? See [Backends](#backends) below; the Google
 Sheets option takes about five minutes and is completely free.

@@ -12,6 +12,13 @@
   "module": "dist/leadbox.esm.js",
   "unpkg": "dist/leadbox.min.js",
   "jsdelivr": "dist/leadbox.min.js",
+  "exports": {
+    ".": {
+      "import": "./dist/leadbox.esm.js",
+      "default": "./dist/leadbox.min.js"
+    },
+    "./dist/*": "./dist/*"
+  },
   "files": [
     "dist",
     "src",
