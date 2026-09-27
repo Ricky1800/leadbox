@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LeadBox theme gallery</title>
+<meta name="description" content="Live preview of every LeadBox theme preset, in light and dark mode." />
+<style>
+  :root {
+    --ink: #111827;
+    --muted: #6b7280;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  header {
+    padding: 48px 24px 32px;
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header h1 { margin: 0 0 12px; font-size: clamp(26px, 4vw, 36px); }
+  header p { margin: 0; color: var(--muted); font-size: 16px; }
+  header code { background: #eef2ff; padding: 2px 6px; border-radius: 4px; font-size: 14px; }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .theme-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .theme-card.is-dark { background: #14141a; border-color: #2a2a33; color: #e5e7eb; }
+  .theme-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .theme-name { margin: 0; font-size: 16px; font-weight: 700; text-transform: capitalize; }
+  .theme-card.is-dark .theme-hint { color: #9ca3af; }
+  .theme-hint { margin: 0; font-size: 12px; color: var(--muted); }
+  .scheme-toggle {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .widget-stage {
+    border-radius: 10px;
+    padding: 16px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background: repeating-conic-gradient(#00000008 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+  }
+  .theme-card.is-dark .widget-stage {
+    background: repeating-conic-gradient(#ffffff0d 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+  }
+  footer {
+    text-align: center;
+    padding: 0 24px 48px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LeadBox theme gallery</h1>
+  <p>
+    Every built-in preset, live. Fill out and submit any form below to see
+    the success check animation. Use the <strong>toggle</strong> on each
+    card to preview <code>data-color-scheme="dark"</code>. Selected via
+    <code>data-theme="&lt;name&gt;"</code> or <code>LeadBox.init({ theme: '&lt;name&gt;' })</code>.
+  </p>
+</header>
+
+<main id="gallery"></main>
+
+<footer>
+  LeadBox theme gallery &middot; <a href="index.html">&larr; back to the widget demo</a>
+</footer>
+
+<script type="module">
+  import { LeadBoxWidget, mergeConfig, normalizeConfig, DEFAULTS, THEME_NAMES } from '../dist/leadbox.esm.js';
+
+  const THEME_BLURBS = {
+    default: 'The out-of-the-box look: neutral blue, rounded, works for almost any business.',
+    salon: 'Hair, nails, spas — soft blush tones, generous rounding, a friendly font.',
+    trades: 'Plumbers, electricians, contractors — bold safety-orange, sharp corners.',
+    restaurant: 'Restaurants and cafes — warm terracotta, serif type, inviting.',
+    clinic: 'Dental, medical, wellness — clean teal, minimal, high trust.',
+    auto: 'Auto repair and body shops — dark red accent, condensed, mechanical.',
+    professional: 'Law, accounting, consulting — navy, serif, restrained.',
+  };
+
+  /** A fetch stub so every demo submission "succeeds" without a network call. */
+  const fakeFetch = () => Promise.resolve({ ok: true, status: 200 });
+
+  /**
+   * Reset the widget's own fixed positioning so the trigger + dialog render
+   * inline inside the gallery card instead of anchored to the viewport.
+   * @param {LeadBoxWidget} widget
+   */
+  function makeInline(widget) {
+    const style = document.createElement('style');
+    style.textContent = `
+      .lb-trigger { position: static !important; }
+      .lb-overlay {
+        position: static !important;
+        inset: auto !important;
+        background: none !important;
+        padding: 0 !important;
+        display: flex !important;
+      }
+      .lb-dialog { max-width: 360px; max-height: none; }
+    `;
+    widget.shadow.appendChild(style);
+  }
+
+  function buildConfig(theme, colorScheme) {
+    return normalizeConfig(
+      mergeConfig(DEFAULTS, {
+        endpoint: 'https://demo.leadbox.invalid/api/leads',
+        theme,
+        colorScheme,
+        title: 'Get a Free Quote',
+        subtitle: "Tell us about your project and we'll follow up within one business day.",
+        buttonText: 'Get a Free Quote',
+        fields: ['name', 'phone', 'email', 'message'],
+        requiredFields: ['name', 'phone'],
+        debug: false,
+      })
+    );
+  }
+
+  function mountCard(theme) {
+    const card = document.createElement('section');
+    card.className = 'theme-card';
+
+    const header = document.createElement('div');
+    header.className = 'theme-card-header';
+    const name = document.createElement('h2');
+    name.className = 'theme-name';
+    name.textContent = theme;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'scheme-toggle';
+    toggle.textContent = 'Preview: dark';
+    header.appendChild(name);
+    header.appendChild(toggle);
+
+    const hint = document.createElement('p');
+    hint.className = 'theme-hint';
+    hint.textContent = THEME_BLURBS[theme] || '';
+
+    const stage = document.createElement('div');
+    stage.className = 'widget-stage';
+
+    card.appendChild(header);
+    card.appendChild(hint);
+    card.appendChild(stage);
+    document.getElementById('gallery').appendChild(card);
+
+    let scheme = 'light';
+    let widget = null;
+
+    function render() {
+      stage.innerHTML = '';
+      widget = new LeadBoxWidget(buildConfig(theme, scheme), { fetchImpl: fakeFetch });
+      widget.mount(stage);
+      makeInline(widget);
+      widget.open();
+      card.classList.toggle('is-dark', scheme === 'dark');
+      toggle.textContent = scheme === 'light' ? 'Preview: dark' : 'Preview: light';
+    }
+
+    toggle.addEventListener('click', () => {
+      scheme = scheme === 'light' ? 'dark' : 'light';
+      render();
+    });
+
+    render();
+  }
+
+  for (const theme of THEME_NAMES) {
+    mountCard(theme);
+  }
+</script>
+</body>
+</html>

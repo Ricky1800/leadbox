@@ -83,6 +83,19 @@ describe('parseDataAttributes', () => {
     );
   });
 
+  it('reads a valid theme name and rejects unknown ones', () => {
+    expect(parseDataAttributes(elWithData({ 'data-theme': 'salon' })).theme).toBe('salon');
+  });
+
+  it('only accepts known color schemes', () => {
+    expect(
+      parseDataAttributes(elWithData({ 'data-color-scheme': 'dark' })).colorScheme
+    ).toBe('dark');
+    expect(
+      parseDataAttributes(elWithData({ 'data-color-scheme': 'bogus' })).colorScheme
+    ).toBeUndefined();
+  });
+
   it('collects locale overrides from data-locale-* attributes', () => {
     const el = elWithData({
       'data-locale-success-message': 'Gracias!',
@@ -155,5 +168,26 @@ describe('normalizeConfig', () => {
     expect(normalizeConfig(mergeConfig({ minSubmitMs: NaN })).minSubmitMs).toBe(
       DEFAULTS.minSubmitMs
     );
+  });
+
+  it('resets an unknown theme name to the default theme', () => {
+    const normalized = normalizeConfig(mergeConfig({ theme: /** @type {any} */ ('nope') }));
+    expect(normalized.theme).toBe(DEFAULTS.theme);
+  });
+
+  it('keeps a known theme name as-is', () => {
+    const normalized = normalizeConfig(mergeConfig({ theme: 'clinic' }));
+    expect(normalized.theme).toBe('clinic');
+  });
+
+  it('resets an invalid colorScheme to the default (auto)', () => {
+    const normalized = normalizeConfig(
+      mergeConfig({ colorScheme: /** @type {any} */ ('purple') })
+    );
+    expect(normalized.colorScheme).toBe(DEFAULTS.colorScheme);
+  });
+
+  it('leaves accentColor unset by default so the theme accent applies', () => {
+    expect(normalizeConfig(mergeConfig({})).accentColor).toBeUndefined();
   });
 });

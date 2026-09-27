@@ -1,5 +1,6 @@
 // @ts-check
 import { DEFAULT_LOCALE } from './locale.js';
+import { DEFAULT_THEME_NAME, isValidTheme } from './themes.js';
 
 /**
  * @typedef {'name'|'phone'|'email'|'message'|'service'|'preferredContact'} LeadBoxFieldKey
@@ -14,7 +15,13 @@ import { DEFAULT_LOCALE } from './locale.js';
  * @property {string} subtitle Modal subheading.
  * @property {string} buttonText Text on the floating trigger button.
  * @property {'bottom-right'|'bottom-left'|'top-right'|'top-left'} position Trigger button position.
- * @property {string} accentColor CSS color used for buttons/accents.
+ * @property {string} theme Preset name (see `src/themes.js`): `default`,
+ *   `salon`, `trades`, `restaurant`, `clinic`, `auto`, or `professional`.
+ * @property {'auto'|'light'|'dark'} colorScheme `auto` follows the visitor's
+ *   OS-level `prefers-color-scheme`; `light`/`dark` force one mode.
+ * @property {string} [accentColor] Optional single-token override for the
+ *   theme's accent color (kept for backwards compatibility with pre-theme
+ *   configs). Leave unset to use the theme's own accent.
  * @property {LeadBoxFieldKey[]} fields Ordered list of fields to render.
  * @property {LeadBoxFieldKey[]} requiredFields Fields that must be filled in.
  * @property {string[]} serviceOptions Options for the "service" select field.
@@ -36,7 +43,9 @@ export const DEFAULTS = {
   subtitle: DEFAULT_LOCALE.subtitle,
   buttonText: DEFAULT_LOCALE.buttonText,
   position: 'bottom-right',
-  accentColor: '#2563eb',
+  theme: DEFAULT_THEME_NAME,
+  colorScheme: 'auto',
+  accentColor: undefined,
   fields: ['name', 'phone', 'email', 'message'],
   requiredFields: ['name', 'phone'],
   serviceOptions: [],
@@ -52,6 +61,7 @@ export const DEFAULTS = {
 const VALID_FIELDS = ['name', 'phone', 'email', 'message', 'service', 'preferredContact'];
 const VALID_POSITIONS = ['bottom-right', 'bottom-left', 'top-right', 'top-left'];
 const VALID_ENCODINGS = ['json', 'form'];
+const VALID_COLOR_SCHEMES = ['auto', 'light', 'dark'];
 
 /**
  * Turn a comma-separated string into a trimmed, non-empty array of strings.
@@ -102,6 +112,10 @@ export function parseDataAttributes(el) {
     config.position = /** @type {LeadBoxConfig['position']} */ (ds.position);
   }
   if (ds.accentColor) config.accentColor = ds.accentColor;
+  if (ds.theme) config.theme = ds.theme;
+  if (ds.colorScheme && VALID_COLOR_SCHEMES.includes(ds.colorScheme)) {
+    config.colorScheme = /** @type {LeadBoxConfig['colorScheme']} */ (ds.colorScheme);
+  }
 
   const fields = splitList(ds.fields);
   if (fields) {
@@ -187,6 +201,10 @@ export function normalizeConfig(config) {
   );
   if (!VALID_POSITIONS.includes(normalized.position)) normalized.position = DEFAULTS.position;
   if (!VALID_ENCODINGS.includes(normalized.encoding)) normalized.encoding = DEFAULTS.encoding;
+  if (!isValidTheme(normalized.theme)) normalized.theme = DEFAULTS.theme;
+  if (!VALID_COLOR_SCHEMES.includes(normalized.colorScheme)) {
+    normalized.colorScheme = DEFAULTS.colorScheme;
+  }
   if (!normalized.method) normalized.method = DEFAULTS.method;
   if (!Number.isFinite(normalized.minSubmitMs) || normalized.minSubmitMs < 0) {
     normalized.minSubmitMs = DEFAULTS.minSubmitMs;

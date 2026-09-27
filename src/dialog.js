@@ -331,6 +331,22 @@ export class LeadBoxWidget {
    */
   _renderSuccess(container) {
     const locale = this.config.locale;
+
+    const check = document.createElement('div');
+    check.className = 'lb-success-check';
+    check.setAttribute('aria-hidden', 'true');
+    check.innerHTML =
+      '<svg viewBox="0 0 36 36" focusable="false">' +
+      '<circle cx="18" cy="18" r="15.5" />' +
+      '<path d="M11 18.5l4.5 4.5L25.5 12" />' +
+      '</svg>';
+    container.appendChild(check);
+
+    const title = document.createElement('p');
+    title.className = 'lb-success-title';
+    title.textContent = locale.successTitle;
+    container.appendChild(title);
+
     const message = document.createElement('p');
     message.className = 'lb-success-message';
     message.textContent = this.config.successMessage;

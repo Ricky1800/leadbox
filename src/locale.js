@@ -22,6 +22,7 @@
  * @property {string} preferredContactText
  * @property {string} submitButtonText
  * @property {string} submittingText
+ * @property {string} successTitle
  * @property {string} successMessage
  * @property {string} errorMessage
  * @property {string} requiredError
@@ -50,6 +51,7 @@ export const DEFAULT_LOCALE = {
   preferredContactText: 'Text',
   submitButtonText: 'Send',
   submittingText: 'Sending…',
+  successTitle: 'Request sent!',
   successMessage: "Thanks! We've received your request and will be in touch soon.",
   errorMessage: 'Something went wrong. Please try again, or call us directly.',
   requiredError: 'This field is required.',

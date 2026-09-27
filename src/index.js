@@ -1,6 +1,12 @@
 // @ts-check
-import { parseDataAttributes, mergeConfig, normalizeConfig } from './config.js';
+import { parseDataAttributes, mergeConfig, normalizeConfig, DEFAULTS } from './config.js';
 import { LeadBoxWidget } from './dialog.js';
+import { THEMES, THEME_NAMES, DEFAULT_THEME_NAME } from './themes.js';
+
+// Re-exported for advanced consumers (e.g. the theme gallery demo, or a site
+// that wants to mount several independent widgets on one page): the public
+// `LeadBox` facade above only ever tracks one singleton instance.
+export { LeadBoxWidget, mergeConfig, normalizeConfig, DEFAULTS, THEMES, THEME_NAMES, DEFAULT_THEME_NAME };
 
 /**
  * @typedef {import('./config.js').LeadBoxConfig} LeadBoxConfig
